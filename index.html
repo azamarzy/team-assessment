@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Pre-Meeting Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a18;
+  --ink2: #3a3a36;
+  --ink3: #6b6b64;
+  --rule: #d8d5cc;
+  --bg: #f5f3ee;
+  --card: #ffffff;
+  --accent: #2d5a3d;
+  --accent2: #4a8c5f;
+  --amber: #b8720a;
+  --amber-bg: #fdf4e3;
+  --green-bg: #eef5f0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+/* HEADER */
+.site-header{background:var(--ink);padding:2.5rem 2rem 2rem;text-align:center}
+.site-header .eyebrow{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2);margin-bottom:1rem}
+.site-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,42px);font-weight:500;color:#f0ede6;line-height:1.15;margin-bottom:.75rem}
+.site-header p{font-size:14px;color:#9a9890;max-width:520px;margin:0 auto;line-height:1.7;font-weight:300}
+.header-rule{width:40px;height:1px;background:var(--accent2);margin:1.25rem auto 0}
+
+/* MAIN */
+main{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+
+/* STEPS */
+.step{display:none}
+.step.active{display:block}
+
+/* NAME STEP */
+.name-block{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:2rem;margin-bottom:1.5rem}
+.name-block .nb-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:.5rem}
+.name-block .nb-sub{font-size:13px;color:var(--ink3);font-weight:300;line-height:1.6;margin-bottom:1.25rem}
+.name-block label{display:block;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:.6rem}
+.name-block input{width:100%;border:1px solid var(--rule);border-radius:3px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.name-block input:focus{border-color:var(--accent)}
+.name-block input::placeholder{color:#b0ada5}
+
+/* SECTION LABEL */
+.section-label{display:flex;align-items:center;gap:1rem;margin:2.5rem 0 1.5rem}
+.s-tag{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);background:var(--green-bg);border:1px solid #b8d9c4;border-radius:2px;padding:3px 8px;white-space:nowrap}
+.s-line{flex:1;height:1px;background:var(--rule)}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--ink2);white-space:nowrap}
+
+/* QUESTION BLOCK */
+.q-block{margin-bottom:2rem}
+.q-meta{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.5rem}
+.q-text{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:1rem}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border:1px solid var(--rule);border-radius:3px;cursor:pointer;background:var(--card);text-align:left;width:100%;transition:border-color .15s,background .15s;-webkit-appearance:none}
+.opt:hover{border-color:#a0b8a8;background:#f8faf8}
+.opt.sel{border-color:var(--accent);background:var(--green-bg)}
+.opt-indicator{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--rule);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}
+.opt.sel .opt-indicator{border-color:var(--accent);background:var(--accent)}
+.opt-dot{width:6px;height:6px;border-radius:50%;background:#fff;opacity:0;transition:opacity .15s}
+.opt.sel .opt-dot{opacity:1}
+.opt-label{font-size:14px;line-height:1.6;color:var(--ink2);font-weight:300}
+.opt.sel .opt-label{color:var(--accent);font-weight:400}
+
+/* PROGRESS + SUBMIT */
+.footer-bar{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.progress-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.progress-track{flex:1;height:3px;background:var(--rule);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.progress-text{font-size:12px;color:var(--ink3);white-space:nowrap}
+.submit-btn{width:100%;padding:14px;background:var(--ink);color:#f0ede6;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,opacity .2s}
+.submit-btn:hover:not(:disabled){background:var(--accent)}
+.submit-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* SAVING STATE */
+.saving-msg{text-align:center;padding:2rem;color:var(--ink3);font-size:14px;font-weight:300}
+.saving-msg span{display:block;font-size:24px;margin-bottom:.5rem}
+
+/* INDIVIDUAL RESULTS */
+.results-header{text-align:center;padding:2rem 0 2rem;border-bottom:1px solid var(--rule);margin-bottom:2rem}
+.results-header .eyebrow2{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+.results-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,34px);font-weight:500;color:var(--ink);margin-bottom:.4rem}
+.results-header .name-display{font-size:14px;color:var(--ink3);font-weight:300}
+.insight-card{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:1.5rem;margin-bottom:1rem;border-left:3px solid var(--accent)}
+.insight-card .i-section{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.insight-card .i-q{font-size:12px;color:var(--ink3);margin-bottom:.6rem}
+.insight-card .i-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:.4rem}
+.insight-card .i-body{font-size:13px;color:var(--ink2);line-height:1.7;font-weight:300}
+.alert-card{border-radius:3px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:13px;line-height:1.7;font-weight:300}
+.alert-amber{background:var(--amber-bg);border:1px solid #e8c87a;color:#7a4e08;border-left:3px solid var(--amber)}
+.alert-green{background:var(--green-bg);border:1px solid #b8d9c4;color:#1e4d2b;border-left:3px solid var(--accent2)}
+.alert-title{font-weight:500;margin-bottom:4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+
+/* COPY RESULTS */
+.copy-section{margin-top:2rem;padding:1.5rem;background:var(--ink);border-radius:4px;text-align:center}
+.copy-section p{font-size:13px;color:#9a9890;margin-bottom:1rem;font-weight:300;line-height:1.6}
+.copy-btn{display:inline-block;padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.copy-btn:hover{background:var(--accent2)}
+.copy-confirm{font-size:12px;color:var(--accent2);margin-top:.75rem;height:18px;transition:opacity .3s;opacity:0}
+.copy-confirm.show{opacity:1}
+
+/* AGGREGATE VIEW */
+.agg-header{text-align:center;padding:2rem 0 2rem;border-bottom:1px solid var(--rule);margin-bottom:2rem}
+.agg-header .eyebrow3{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+.agg-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,34px);font-weight:500;color:var(--ink);margin-bottom:.5rem}
+.agg-header .agg-sub{font-size:14px;color:var(--ink3);font-weight:300}
+.response-count{display:inline-flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--rule);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--ink2);margin-top:.75rem}
+.count-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2)}
+.agg-q-block{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:1.5rem;margin-bottom:1.5rem}
+.agg-q-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.4rem}
+.agg-q-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--ink);margin-bottom:1.25rem;line-height:1.4}
+.bar-row{margin-bottom:.75rem}
+.bar-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.bar-option{font-size:12px;color:var(--ink2);font-weight:300;max-width:85%;line-height:1.4}
+.bar-count{font-size:12px;color:var(--ink3);white-space:nowrap;margin-left:.5rem}
+.bar-track{height:8px;background:#eceae4;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:var(--rule);transition:width .6s ease}
+.bar-fill.leader{background:var(--accent)}
+.bar-fill.second{background:var(--accent2)}
+.agg-divider{border:none;border-top:1px solid var(--rule);margin:1.25rem 0}
+.agg-insight{padding-top:0}
+.agg-insight .lean-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.agg-insight .lean-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:.4rem}
+.agg-insight .lean-body{font-size:13px;color:var(--ink2);line-height:1.7;font-weight:300}
+.no-data{text-align:center;padding:3rem 1rem;color:var(--ink3);font-size:14px;font-weight:300}
+.no-data strong{display:block;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--ink);font-weight:500;margin-bottom:.5rem}
+
+.restart-btn{display:block;margin:1.5rem auto 0;background:none;border:1px solid var(--rule);border-radius:3px;padding:8px 20px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink3);cursor:pointer;letter-spacing:.06em}
+.restart-btn:hover{border-color:var(--ink3);color:var(--ink)}
+
+@media(max-width:480px){
+  .site-header{padding:2rem 1.25rem 1.5rem}
+  main{padding:2rem 1.25rem 3rem}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Community Leadership Initiative</div>
+  <h1>Team Pre-Meeting Assessment</h1>
+  <p>Six questions on purpose, identity and influence. Select the answer that most closely reflects your instinct. There are no right or wrong responses.</p>
+  <div class="header-rule"></div>
+</header>
+
+<main>
+
+<!-- ==================== INDIVIDUAL ASSESSMENT ==================== -->
+<div id="assessment-view">
+
+  <!-- STEP 0: NAME -->
+  <div class="step active" id="step-name">
+    <div class="name-block">
+      <div class="nb-title">Before we begin</div>
+      <div class="nb-sub">Please enter your name so your response can be included in the collective team insights. Your individual answers remain private — only the aggregate picture is shared with the group.</div>
+      <label for="member-name">Your full name</label>
+      <input type="text" id="member-name" placeholder="Enter your full name" autocomplete="off">
+    </div>
+    <button class="submit-btn" id="name-next-btn" onclick="startAssessment()" disabled>Begin assessment</button>
+  </div>
+
+  <!-- STEP 1: QUESTIONS -->
+  <div class="step" id="step-questions">
+
+    <div class="section-label">
+      <span class="s-tag">Part A</span>
+      <div class="s-line"></div>
+      <span class="s-title">Purpose and identity</span>
+    </div>
+
+    <div class="q-block">
+      <div class="q-meta">Question 1 of 6</div>
+      <div class="q-text">At its core, what is this team's primary reason for existing?</div>
+      <div class="opts" data-q="1">
+        <button class="opt" data-v="A" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">To quietly elevate the community's quality of life without credit or visibility</span></button>
+        <button class="opt" data-v="B" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">To advise and strengthen the leaders who already hold formal authority in institutions</span></button>
+        <button class="opt" data-v="C" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">To fill the critical gaps that current institutions are failing to address</span></button>
+        <button class="opt" data-v="D" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">To build a durable intellectual and moral infrastructure the community will own for generations</span></button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-meta">Question 2 of 6</div>
+      <div class="q-text">What should the team absolutely never do, even if it would accelerate positive change?</div>
+      <div class="opts" data-q="2">
+        <button class="opt" data-v="A" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Seek public recognition, formal titles or positions of authority within institutions</span></button>
+        <button class="opt" data-v="B" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Intervene in matters that risk fracturing community unity or triggering social tension</span></button>
+        <button class="opt" data-v="C" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Bypass or undermine the community's existing leaders, however imperfect they may be</span></button>
+        <button class="opt" data-v="D" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Compromise the team's core values or ethical standards to achieve faster results</span></button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-meta">Question 3 of 6</div>
+      <div class="q-text">In 10 years, if the team's efforts produce transformational change, what should the community believe about how it happened?</div>
+      <div class="opts" data-q="3">
+        <button class="opt" data-v="A" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">That the change grew organically from within the institutions, with no single orchestrating force visible</span></button>
+        <button class="opt" data-v="B" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">That a handful of exceptional community leaders were the visionaries who made it happen</span></button>
+        <button class="opt" data-v="C" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">That a committed group of professionals quietly invested years of effort behind the scenes</span></button>
+        <button class="opt" data-v="D" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">That a grassroots community movement, mobilised across all institutions, drove the transformation</span></button>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <span class="s-tag">Part B</span>
+      <div class="s-line"></div>
+      <span class="s-title">Influence and approach</span>
+    </div>
+
+    <div class="q-block">
+      <div class="q-meta">Question 4 of 6</div>
+      <div class="q-text">What is the most effective way for the team to earn its first real foothold of trust inside a community institution?</div>
+      <div class="opts" data-q="4">
+        <button class="opt" data-v="A" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Offer expert knowledge or professional skills that solve an urgent, visible problem for the institution</span></button>
+        <button class="opt" data-v="B" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Show up consistently and give time without any visible agenda, letting trust build through presence</span></button>
+        <button class="opt" data-v="C" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Cultivate a deep personal relationship with the institution's most respected gatekeeper first</span></button>
+        <button class="opt" data-v="D" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Become the go-to resource for a specific critical gap the institution currently cannot fill itself</span></button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-meta">Question 5 of 6</div>
+      <div class="q-text">When a community institution pushes back on or resists an idea the team is quietly championing, what is the right response?</div>
+      <div class="opts" data-q="5">
+        <button class="opt" data-v="A" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Step back, rebuild trust, and reintroduce the idea later through a more trusted internal advocate</span></button>
+        <button class="opt" data-v="B" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Pilot the idea in a more receptive institution first, so success creates natural peer pressure to adopt it</span></button>
+        <button class="opt" data-v="C" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Diagnose the specific concern beneath the resistance and address that root issue directly</span></button>
+        <button class="opt" data-v="D" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Accept that the institution is not ready and redirect energy to where there is genuine openness</span></button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-meta">Question 6 of 6</div>
+      <div class="q-text">Given the diversity of organisations in the community — from mosques and welfare foundations to alumni movements, schools and clubs — how should the team navigate across such varied structures?</div>
+      <div class="opts" data-q="6">
+        <button class="opt" data-v="A" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Treat each organisation separately with a tailored approach that respects its specific culture and decision making style</span></button>
+        <button class="opt" data-v="B" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Build a cross-institutional coalition first, then work through the combined authority of united organisational leaders</span></button>
+        <button class="opt" data-v="C" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Anchor on the shared community values common across all organisations and always lead from that common ground</span></button>
+        <button class="opt" data-v="D" onclick="pick(this)"><span class="opt-indicator"><span class="opt-dot"></span></span><span class="opt-label">Match each team member to the organisation type that best suits their background, network and personal credibility</span></button>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="progress-row">
+        <span class="progress-text" id="prog-label">0 of 6 answered</span>
+        <div class="progress-track"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+      </div>
+      <button class="submit-btn" id="submit-btn" disabled onclick="submitAssessment()">Submit and view my insights</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: SAVING -->
+  <div class="step" id="step-saving">
+    <div class="saving-msg">
+      <span>&#8987;</span>
+      Saving your response and generating your insights...
+    </div>
+  </div>
+
+  <!-- STEP 3: INDIVIDUAL RESULTS -->
+  <div class="step" id="step-results">
+    <div class="results-header">
+      <div class="eyebrow2">Your personal insights</div>
+      <h2>Here is what your thinking reveals</h2>
+      <div class="name-display" id="result-name-display"></div>
+    </div>
+    <div id="individual-insight-cards"></div>
+    <div class="copy-section">
+      <p>Share your results with the team by copying the summary below and pasting it into your group chat or email thread.</p>
+      <button class="copy-btn" onclick="copyResults()">Copy my results summary</button>
+      <div class="copy-confirm" id="copy-confirm">Copied to clipboard</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== AGGREGATE VIEW ==================== -->
+<div id="aggregate-view" style="display:none">
+  <div class="agg-header">
+    <div class="eyebrow3">Collective team insights</div>
+    <h2>Where the team is leaning</h2>
+    <div class="agg-sub">Aggregate results across all responses, shown question by question</div>
+    <div class="response-count"><span class="count-dot"></span><span id="agg-count-label">Loading responses...</span></div>
+  </div>
+  <div id="agg-content"></div>
+</div>
+
+</main>
+
+<script>
+// ============================================================
+// CONFIGURATION — paste your Apps Script web app URL here
+// ============================================================
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxd1-8ZS30i37LgdfLCx48sC2PkUTyTQUEuEm7peq8bf3DY6QXD1pSlw5ZTY3_PXyfFbg/exec';
+const TEAM_SIZE = 13;
+// ============================================================
+
+const answers = {};
+const TOTAL = 6;
+let memberName = '';
+
+const questions = [
+  {
+    section: 'Purpose and identity',
+    text: 'At its core, what is this team\'s primary reason for existing?',
+    opts: {
+      A: 'To quietly elevate the community\'s quality of life without credit or visibility',
+      B: 'To advise and strengthen the leaders who already hold formal authority in institutions',
+      C: 'To fill the critical gaps that current institutions are failing to address',
+      D: 'To build a durable intellectual and moral infrastructure the community will own for generations'
+    }
+  },
+  {
+    section: 'Purpose and identity',
+    text: 'What should the team absolutely never do, even if it would accelerate positive change?',
+    opts: {
+      A: 'Seek public recognition, formal titles or positions of authority within institutions',
+      B: 'Intervene in matters that risk fracturing community unity or triggering social tension',
+      C: 'Bypass or undermine the community\'s existing leaders, however imperfect they may be',
+      D: 'Compromise the team\'s core values or ethical standards to achieve faster results'
+    }
+  },
+  {
+    section: 'Purpose and identity',
+    text: 'In 10 years, if the team\'s efforts produce transformational change, what should the community believe about how it happened?',
+    opts: {
+      A: 'That the change grew organically from within the institutions, with no single orchestrating force visible',
+      B: 'That a handful of exceptional community leaders were the visionaries who made it happen',
+      C: 'That a committed group of professionals quietly invested years of effort behind the scenes',
+      D: 'That a grassroots community movement, mobilised across all institutions, drove the transformation'
+    }
+  },
+  {
+    section: 'Influence and approach',
+    text: 'What is the most effective way for the team to earn its first real foothold of trust inside a community institution?',
+    opts: {
+      A: 'Offer expert knowledge or professional skills that solve an urgent, visible problem for the institution',
+      B: 'Show up consistently and give time without any visible agenda, letting trust build through presence',
+      C: 'Cultivate a deep personal relationship with the institution\'s most respected gatekeeper first',
+      D: 'Become the go-to resource for a specific critical gap the institution currently cannot fill itself'
+    }
+  },
+  {
+    section: 'Influence and approach',
+    text: 'When a community institution pushes back on or resists an idea the team is quietly championing, what is the right response?',
+    opts: {
+      A: 'Step back, rebuild trust, and reintroduce the idea later through a more trusted internal advocate',
+      B: 'Pilot the idea in a more receptive institution first, so success creates natural peer pressure to adopt it',
+      C: 'Diagnose the specific concern beneath the resistance and address that root issue directly',
+      D: 'Accept that the institution is not ready and redirect energy to where there is genuine openness'
+    }
+  },
+  {
+    section: 'Influence and approach',
+    text: 'Given the diversity of organisations in the community — from mosques and welfare foundations to alumni movements, schools and clubs — how should the team navigate across such varied structures?',
+    opts: {
+      A: 'Treat each organisation separately with a tailored approach that respects its specific culture and decision making style',
+      B: 'Build a cross-institutional coalition first, then work through the combined authority of united organisational leaders',
+      C: 'Anchor on the shared community values common across all organisations and always lead from that common ground',
+      D: 'Match each team member to the organisation type that best suits their background, network and personal credibility'
+    }
+  }
+];
+
+const insights = {
+  1:{A:{title:'The quiet servant',body:'You see the team as inherently selfless. Success is defined by community improvement, not team recognition. This is the healthiest long-term orientation for invisible influence, but the team must agree on how to sustain motivation without external validation.'},B:{title:'The advisor model',body:'You see the team\'s role as strengthening existing leaders rather than driving change directly. This is a low-risk, high-trust approach but requires patience, as the team\'s agenda depends heavily on the quality and openness of those it advises.'},C:{title:'The gap filler',body:'You see the team as an intervention force, stepping in where institutions fall short. This is action-oriented and practical, but risks the team being seen as critical of existing leadership if not handled with care.'},D:{title:'The legacy builder',body:'You think in generations, not years. You want the team\'s work to outlast its members. This is the most ambitious orientation and requires the team to invest as much in developing others as in driving direct change.'}},
+  2:{A:{title:'Guard against visibility',body:'Your red line is about ego and power. You believe invisibility is the team\'s greatest strategic asset and that seeking recognition would fundamentally compromise its ability to influence. This is widely shared in servant leadership theory.'},B:{title:'Guard against division',body:'Your red line is about harmony. You see community cohesion as the precondition for any lasting change and believe the team must never be the spark that fractures relationships across social or organisational lines.'},C:{title:'Guard against arrogance',body:'Your red line is about respect. You believe that bypassing existing leaders, however imperfect, would delegitimise the team\'s work and create lasting resentment. Trust must be built through, not around, the gatekeepers.'},D:{title:'Guard against compromise',body:'Your red line is about integrity. You believe the team\'s moral authority is its most valuable asset and that compromising values for speed would hollow out the very foundation the team is trying to build.'}},
+  3:{A:{title:'True invisibility is the goal',body:'You believe the team\'s ultimate success is complete disappearance from the narrative. The community should experience change as something that emerged naturally. This requires exceptional discipline from every team member.'},B:{title:'Empower visible champions',body:'You are comfortable with the team being invisible if credit lands on specific community leaders it has quietly empowered. This is practical — it builds sustainable momentum through people the community already trusts.'},C:{title:'Quiet pride is acceptable',body:'You believe the team may eventually be acknowledged, at least within the community, as the quiet force behind the change. This is honest but requires a clear line between quiet acknowledgement and public self-promotion.'},D:{title:'Collective ownership wins',body:'You want the community to feel it drove its own transformation, not that change was done for it. This is the most empowering outcome and the hardest to engineer invisibly over a long timeframe.'}},
+  4:{A:{title:'Lead with expertise',body:'You believe the fastest path to trust is demonstrating competence. Solving a real problem commands immediate respect, especially in a community that holds professional qualifications in high esteem. The risk is that trust earned through expertise can feel transactional.'},B:{title:'Lead with presence',body:'You believe deep, durable trust is built through consistency and time, not skill demonstrations. This is slower but produces the kind of organic loyalty that withstands setbacks and disagreements. It aligns strongly with South Asian community dynamics.'},C:{title:'Lead with the gatekeeper',body:'You understand that in traditional community structures, influence flows from the top. Winning over the right elder, principal or organisational leader unlocks everything else. This is a high-leverage, high-dependency strategy.'},D:{title:'Lead with utility',body:'You believe the team should position itself as indispensable — the irreplaceable resource for a specific institutional need. This is strategic and sustainable but requires careful mapping of what each organisation genuinely lacks.'}},
+  5:{A:{title:'Patient re-entry',body:'You play the long game. Resistance is information, not defeat, and you believe the right internal advocate at the right moment is worth more than direct pressure. This requires discipline and a wide network of quiet relationships.'},B:{title:'Proof by example',body:'You use social proof as a lever, letting visible success in one institution create natural desire in another. This is elegant and low-confrontation, but requires the team to have enough reach across multiple organisations simultaneously.'},C:{title:'Diagnose before pushing',body:'You believe resistance is always rooted in something specific — a fear, a misunderstanding, a legitimate concern. You want to address the real issue rather than work around it. This demands strong listening skills from team members.'},D:{title:'Strategic resource allocation',body:'You are pragmatic. Not every institution is ready at the same time and spending energy on resistant organisations wastes the team\'s most limited resource: goodwill. You focus energy where genuine receptivity exists.'}},
+  6:{A:{title:'Tailored by organisation type',body:'You believe each organisation has its own culture, pace and decision making structure that demands a customised approach. This is the most respectful strategy but the most resource-intensive to sustain across many institutions.'},B:{title:'Build the coalition first',body:'You see united organisational leadership as a powerful lever. If the team can align leaders across different institution types around shared purpose, their collective weight amplifies any community initiative significantly.'},C:{title:'Lead from shared values',body:'You believe that beneath every organisation is a common commitment to community wellbeing. Working always from that shared ground avoids favouring any institution and makes the team\'s influence more universally accepted.'},D:{title:'Match by personal fit',body:'You believe authentic influence is built through genuine personal connection. A team member whose background aligns with a specific organisation type will always have deeper access. This is honest but may create silos if not managed carefully.'}}
+};
+
+const aggInsights = {
+  1:{A:'The team\'s dominant orientation is selfless service — invisibility and humility are the consensus starting point. The meeting should establish how the team sustains motivation and celebrates progress internally without external recognition.',B:'The team sees itself primarily as a support and advisory force behind existing institutional leaders. The meeting should clarify which leaders are the priority relationships and how the team avoids becoming dependent on any single gatekeeper.',C:'The team\'s dominant instinct is gap-filling — pragmatic, action-oriented intervention. The meeting should define which gaps are priorities and how the team avoids being perceived as critical of current leadership.',D:'The team is anchored in legacy thinking — building something that outlasts its members. The meeting should discuss what that infrastructure looks like concretely and how the team begins building succession from day one.'},
+  2:{A:'The team\'s most widely shared red line is the pursuit of visibility or authority. Invisibility is seen as non-negotiable. The meeting should agree on what happens when individual members are publicly recognised despite the team\'s intentions.',B:'The team\'s primary caution is around community fracture and division. Cohesion is the precondition the team will protect above all else. The meeting should map which topics or interventions carry the highest fracture risk.',C:'The team\'s dominant concern is about respecting and working through existing leaders. Bypassing gatekeepers is seen as the greatest risk. The meeting should discuss how the team handles situations where existing leaders are actively obstructive.',D:'The team\'s red line is ethical integrity. Compromising values for results is unanimously off the table. The meeting should define what the team\'s core values are explicitly, so members can reference them in difficult situations.'},
+  3:{A:'The team\'s dominant aspiration is true invisibility — the change appears organic and leaderless. This requires strong internal discipline and trust. The meeting should agree on how the team prevents any one member from becoming too visible.',B:'The team is comfortable letting credit flow to individual community champions it has empowered. This is practical and sustainable. The meeting should identify who those potential visible champions are across each institution.',C:'The team is open to quiet acknowledgement within the community over time. The meeting should define the boundary between acceptable acknowledgement and problematic visibility, and agree on how to respond when credit is offered publicly.',D:'The team\'s aspiration is community-owned transformation. The meeting should discuss how the team deliberately transfers ownership of initiatives to the community before they become associated with the team.'},
+  4:{A:'The team\'s primary trust-building instinct is professional expertise. Competence is the opening move. The meeting should map which professional skills each member offers and which institutions each person is best positioned to enter first.',B:'The team believes consistent, agenda-free presence is the foundation of durable trust. The meeting should discuss what commitment of time this requires from members and how to manage that sustainably alongside professional responsibilities.',C:'The team\'s primary strategy is winning the gatekeeper. The meeting should map the key gatekeepers across each target institution and assign specific team members to cultivate those relationships.',D:'The team\'s instinct is to become indispensable through a specific, well-defined utility. The meeting should conduct an audit of each institution\'s most critical unmet needs and match team capabilities to those gaps.'},
+  5:{A:'When facing resistance, the team\'s dominant instinct is patient withdrawal and re-entry through a better advocate. The meeting should build a shared understanding of how to identify and cultivate internal advocates inside each institution before they are needed.',B:'The team\'s primary response to resistance is proof by example — piloting elsewhere first. The meeting should identify which institution is most likely to be receptive and could serve as the first proof-of-concept environment.',C:'The team\'s instinct is to engage resistance directly by diagnosing the root concern. The meeting should develop a shared framework for how team members identify and address the real sources of institutional pushback.',D:'The team is pragmatic about resistance — redirecting energy rather than pushing. The meeting should agree on clear criteria for when an institution is genuinely not ready versus when resistance should be worked through rather than walked away from.'},
+  6:{A:'The team leans toward tailored, institution-specific approaches. The meeting should develop a simple profiling tool so members can quickly understand each organisation\'s culture and decision making style before engaging.',B:'The team\'s instinct is coalition building across institutions. The meeting should identify the most credible potential convener for a cross-institutional gathering and discuss what a shared agenda could look like in practical terms.',C:'The team wants to lead from shared values across all organisations. The meeting should articulate those two or three core values explicitly, in language that resonates across the diversity of institutions in the community.',D:'The team believes personal fit is the primary determinant of effective influence. The meeting should map each team member to the institution types where their background and credibility is strongest, and identify any institutions that currently lack a natural team champion.'}
+};
+
+// NAME INPUT
+document.getElementById('member-name').addEventListener('input', function() {
+  document.getElementById('name-next-btn').disabled = this.value.trim().length < 2;
+});
+
+function startAssessment() {
+  memberName = document.getElementById('member-name').value.trim();
+  showStep('step-questions');
+}
+
+// PICK ANSWER
+function pick(el) {
+  const grp = el.closest('.opts');
+  const q = parseInt(grp.dataset.q);
+  grp.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  answers[q] = el.dataset.v;
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  document.getElementById('prog-label').textContent = count + ' of ' + TOTAL + ' answered';
+  document.getElementById('prog-bar').style.width = (count / TOTAL * 100) + '%';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = count < TOTAL;
+}
+
+// SUBMIT
+async function submitAssessment() {
+  showStep('step-saving');
+  const payload = { name: memberName, q1: answers[1], q2: answers[2], q3: answers[3], q4: answers[4], q5: answers[5], q6: answers[6] };
+  try {
+    await fetch(BACKEND_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { /* no-cors will always throw — this is expected */ }
+  setTimeout(showIndividualResults, 1200);
+}
+
+function showIndividualResults() {
+  document.getElementById('result-name-display').textContent = memberName;
+  const container = document.getElementById('individual-insight-cards');
+  container.innerHTML = '';
+
+  const qMeta = {1:'Purpose and identity',2:'Purpose and identity',3:'Purpose and identity',4:'Influence and approach',5:'Influence and approach',6:'Influence and approach'};
+
+  // Tension/alignment check
+  let alert = null;
+  if (answers[2] === 'C' && answers[5] === 'D') {
+    alert = {type:'amber',title:'Potential tension to explore',body:'You believe the team should never bypass existing leaders (Q2), yet you would redirect energy away from resistant institutions (Q5). The meeting should discuss how the team distinguishes patient respect for gatekeepers from giving up on them entirely.'};
+  } else if (answers[2] === 'A' && answers[3] === 'C') {
+    alert = {type:'amber',title:'Potential tension to explore',body:'You want to avoid public recognition (Q2) but are comfortable with the community eventually acknowledging the team (Q3). The meeting should define clearly where quiet acknowledgement ends and problematic visibility begins.'};
+  } else if (answers[5] === 'B' && answers[2] === 'B') {
+    alert = {type:'green',title:'Strong internal alignment',body:'Your approach to resistance (proof by example across institutions) is well matched to your red line around community division. Spreading ideas through peer success is one of the lowest-friction influence strategies available in a diverse community.'};
+  } else if (answers[4] === 'B' && answers[5] === 'A') {
+    alert = {type:'green',title:'Strong internal alignment',body:'Your trust-building approach (consistent presence) and your response to resistance (patient re-entry) are deeply compatible. Both reflect a long-horizon philosophy that is well suited to the pace of change in South Asian community institutions.'};
+  }
+
+  if (alert) {
+    const bar = document.createElement('div');
+    bar.className = 'alert-card alert-' + alert.type;
+    bar.innerHTML = '<div class="alert-title">' + alert.title + '</div>' + alert.body;
+    container.appendChild(bar);
+  }
+
+  for (let q = 1; q <= 6; q++) {
+    const v = answers[q];
+    const ins = insights[q][v];
+    const card = document.createElement('div');
+    card.className = 'insight-card';
+    card.innerHTML = '<div class="i-section">' + qMeta[q] + ' &middot; Q' + q + '</div>' +
+      '<div class="i-q">' + questions[q-1].text.substring(0,80) + '...</div>' +
+      '<div class="i-title">' + ins.title + '</div>' +
+      '<div class="i-body">' + ins.body + '</div>';
+    container.appendChild(card);
+  }
+
+  showStep('step-results');
+}
+
+// COPY RESULTS
+function copyResults() {
+  let text = 'Team Assessment Results — ' + memberName + '\n\n';
+  for (let q = 1; q <= 6; q++) {
+    const v = answers[q];
+    text += 'Q' + q + ': ' + insights[q][v].title + '\n';
+    text += questions[q-1].opts[v] + '\n\n';
+  }
+  navigator.clipboard.writeText(text).then(() => {
+    const el = document.getElementById('copy-confirm');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+  });
+}
+
+// AGGREGATE VIEW
+async function loadAggregate() {
+  document.getElementById('assessment-view').style.display = 'none';
+  document.getElementById('aggregate-view').style.display = 'block';
+
+  let responses = [];
+  try {
+    const res = await fetch(BACKEND_URL + '?action=get');
+    responses = await res.json();
+  } catch(e) {
+    document.getElementById('agg-content').innerHTML = '<div class="no-data"><strong>Could not load responses</strong>Check that your Apps Script URL is configured correctly in the HTML file.</div>';
+    return;
+  }
+
+  const count = responses.length;
+  document.getElementById('agg-count-label').textContent = count + ' of ' + TEAM_SIZE + ' members have responded';
+
+  if (count === 0) {
+    document.getElementById('agg-content').innerHTML = '<div class="no-data"><strong>No responses yet</strong>Share the assessment URL with your team and check back once members have submitted.</div>';
+    return;
+  }
+
+  const container = document.getElementById('agg-content');
+  container.innerHTML = '';
+
+  for (let q = 1; q <= 6; q++) {
+    const tally = {A:0,B:0,C:0,D:0};
+    responses.forEach(r => { const v = r['q'+q]; if (v) tally[v]++; });
+    const maxVal = Math.max(...Object.values(tally));
+    const leader = Object.keys(tally).find(k => tally[k] === maxVal);
+    const sorted = Object.keys(tally).sort((a,b) => tally[b]-tally[a]);
+
+    const block = document.createElement('div');
+    block.className = 'agg-q-block';
+
+    let barsHtml = '';
+    sorted.forEach((opt, idx) => {
+      const pct = count > 0 ? Math.round((tally[opt] / count) * 100) : 0;
+      const fillClass = idx === 0 ? 'leader' : (idx === 1 ? 'second' : '');
+      barsHtml += '<div class="bar-row">' +
+        '<div class="bar-label"><span class="bar-option"><strong>' + opt + '.</strong> ' + questions[q-1].opts[opt] + '</span><span class="bar-count">' + tally[opt] + ' / ' + count + '</span></div>' +
+        '<div class="bar-track"><div class="bar-fill ' + fillClass + '" style="width:' + pct + '%"></div></div>' +
+        '</div>';
+    });
+
+    const ins = aggInsights[q][leader];
+    const iTitle = insights[q][leader].title;
+
+    block.innerHTML =
+      '<div class="agg-q-label">' + questions[q-1].section + ' &middot; Question ' + q + ' of 6</div>' +
+      '<div class="agg-q-text">' + questions[q-1].text + '</div>' +
+      barsHtml +
+      '<hr class="agg-divider">' +
+      '<div class="agg-insight">' +
+        '<div class="lean-label">The team leans toward</div>' +
+        '<div class="lean-title">' + iTitle + '</div>' +
+        '<div class="lean-body">' + ins + '</div>' +
+      '</div>';
+
+    container.appendChild(block);
+  }
+}
+
+// UTILITY
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ROUTE: ?results shows aggregate
+if (new URLSearchParams(window.location.search).has('results')) {
+  loadAggregate();
+}
+</script>
+</body>
+</html>
